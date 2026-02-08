@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Chocolate Day! 🍫</title>
+    <style>
+        body { font-family: 'Dancing Script', cursive; background: #2b1700; color: #f3e5ab; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        
+        #boxContainer { text-align: center; cursor: pointer; }
+        .box-lid { font-size: 100px; transition: 0.5s; }
+        .instruction { font-size: 1.2rem; margin-top: 10px; color: #d4af37; }
+
+        #letter { display: none; background: #fff5e1; color: #4b2c20; padding: 40px; border-radius: 15px; box-shadow: 0 0 50px #d4af37; text-align: center; max-width: 400px; }
+        
+        .btn-container { margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 20px; min-height: 100px; }
+        button { border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        #yesBtn { background: #7b3f00; color: white; padding: 15px 30px; font-size: 1.2rem; }
+        #noBtn { background: #888; color: white; padding: 10px 20px; font-size: 1rem; }
+
+        .choco-rain { position: fixed; top: -50px; pointer-events: none; z-index: 100; font-size: 2rem; }
+    </style>
+</head>
+<body>
+
+    <div id="boxContainer" onclick="revealLetter()">
+        <div class="box-lid">🎁</div>
+        <div class="instruction">You received a box of chocolates!<br><b>Click to open</b></div>
+    </div>
+
+    <div id="letter">
+        <h2 id="heading">Happy Chocolate Day, Baby! 🍫</h2>
+        <p id="mainText">You’re the sweetest part of my life. Will you be my Valentine forever?</p>
+        
+        <div class="btn-container">
+            <button id="yesBtn" onclick="finish()">YES!</button>
+            <button id="noBtn" onclick="shrinkNo()">No</button>
+        </div>
+    </div>
+
+    <script>
+        let noScale = 1;
+        let yesScale = 1;
+        const threats = [
+            "Are you sure? 🤨",
+            "I'm gonna kill you! 🔪",
+            "You can't say no to chocolate!",
+            "Do you really wanna say no??",
+            "Too late, it's shrinking!",
+            "Almost gone..."
+        ];
+
+        function revealLetter() {
+            document.getElementById('boxContainer').style.display = 'none';
+            document.getElementById('letter').style.display = 'block';
+            rain('🍫');
+        }
+
+        function shrinkNo() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            
+            noScale -= 0.15;
+            yesScale += 0.2;
+            
+            if (noScale <= 0.1) {
+                noBtn.style.display = 'none';
+            } else {
+                noBtn.style.transform = `scale(${noScale})`;
+                noBtn.innerText = threats[Math.floor(Math.random() * threats.length)];
+                yesBtn.style.transform = `scale(${yesScale})`;
+            }
+        }
+
+        function finish() {
+            document.getElementById('heading').innerText = "Ofc you can't say no! heheh";
+            document.getElementById('mainText').innerText = "You're my favorite treat! ❤️";
+            document.querySelector('.btn-container').style.display = 'none';
+            setInterval(() => rain('🍫'), 200);
+            setInterval(() => rain('💖'), 300);
+        }
+
+        function rain(emoji) {
+            const e = document.createElement('div');
+            e.innerText = emoji;
+            e.className = 'choco-rain';
+            e.style.left = Math.random() * 100 + "vw";
+            document.body.appendChild(e);
+            
+            let pos = -50;
+            let id = setInterval(() => {
+                if (pos > window.innerHeight) { clearInterval(id); e.remove(); }
+                else { pos += 5; e.style.top = pos + "px"; }
+            }, 20);
+        }
+    </script>
+</body>
+</html>
